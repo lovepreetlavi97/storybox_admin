@@ -30,6 +30,7 @@ export default function AudioPage() {
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [description, setDescription] = useState('');
+  const [lyrics, setLyrics] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [featured, setFeatured] = useState(false);
   const [trending, setTrending] = useState(false);
@@ -165,6 +166,7 @@ export default function AudioPage() {
       setTitle(audio.title);
       setSlug(audio.slug);
       setDescription(audio.description);
+      setLyrics(audio.lyrics || '');
       setCategoryId(typeof audio.category === 'object' ? (audio.category as any)._id : audio.category);
       setFeatured(audio.featured);
       setTrending(audio.trending);
@@ -177,6 +179,7 @@ export default function AudioPage() {
       setTitle('');
       setSlug('');
       setDescription('');
+      setLyrics('');
       setCategoryId(categories[0]?._id || '');
       setFeatured(false);
       setTrending(false);
@@ -216,7 +219,8 @@ export default function AudioPage() {
       language: 'English',
       featured,
       trending,
-      published
+      published,
+      lyrics
     };
 
     try {
@@ -498,11 +502,11 @@ export default function AudioPage() {
                   {/* Audio upload box */}
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">
-                      Audio File (MP3) <span className="text-rose-500">*</span>
+                      Media File (MP3/MP4) <span className="text-rose-500">*</span>
                     </label>
                     <input 
                       type="file" 
-                      accept="audio/*" 
+                      accept="audio/*,video/mp4,.mp4" 
                       className="hidden" 
                       ref={fileInputRef}
                       onChange={handleAudioSelect}
@@ -535,7 +539,7 @@ export default function AudioPage() {
                           onClick={() => fileInputRef.current?.click()}
                           className="text-xs font-semibold text-rose-400 hover:text-rose-300 transition-colors cursor-pointer border border-rose-500/10 bg-rose-500/5 px-3 py-1.5 rounded-lg"
                         >
-                          Change MP3
+                          Change Media
                         </button>
                       </div>
                     ) : (
@@ -546,8 +550,8 @@ export default function AudioPage() {
                       >
                         <>
                           <FileAudio className="h-8 w-8" />
-                          <span className="text-sm font-medium">Select MP3 Audio File</span>
-                          <span className="text-xs text-zinc-600">MP3, M4A or WAV format</span>
+                          <span className="text-sm font-medium">Select Media File</span>
+                          <span className="text-xs text-zinc-600">MP3, MP4, M4A or WAV format</span>
                         </>
                       </button>
                     )}
@@ -611,11 +615,25 @@ export default function AudioPage() {
                     </label>
                     <textarea
                       placeholder="Write an engaging overview summary of this audiobook..."
-                      rows={4}
+                      rows={3}
                       required
                       className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2 text-white placeholder-zinc-500 focus:outline-none focus:border-rose-500 transition-colors text-sm resize-none"
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
+                      disabled={submitting}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+                      Lyrics / Transcript
+                    </label>
+                    <textarea
+                      placeholder="Write or paste lyrics/transcript details here..."
+                      rows={4}
+                      className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2 text-white placeholder-zinc-500 focus:outline-none focus:border-rose-500 transition-colors text-sm resize-none font-sans"
+                      value={lyrics}
+                      onChange={(e) => setLyrics(e.target.value)}
                       disabled={submitting}
                     />
                   </div>
