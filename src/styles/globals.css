@@ -19,7 +19,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Custom scrollbar */
+/* Custom luxury scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -32,5 +32,14 @@ body {
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #ef4444;
+}
+
+/* Hiding scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
