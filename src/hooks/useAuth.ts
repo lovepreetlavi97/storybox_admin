@@ -21,8 +21,8 @@ export function useAuth() {
     }
   }, [router]);
 
-  const login = (token: string) => {
-    setAuthToken(token);
+  const login = (token: string, remember: boolean = true) => {
+    setAuthToken(token, remember);
     setAuthorized(true);
     router.push('/dashboard');
   };

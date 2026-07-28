@@ -5,11 +5,13 @@ import { useRouter } from 'next/navigation';
 import { apiRequest } from '@/services/api';
 import { setAuthToken, getAuthToken } from '@/utils/auth';
 import { ApiResponse } from '@/types';
+import { PasswordInput } from '@/components/ui/PasswordInput';
 
 export default function LoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -17,6 +19,14 @@ export default function LoginPage() {
     // If token exists, go straight to dashboard
     if (getAuthToken()) {
       router.push('/dashboard');
+      return;
+    }
+
+    // Restore remembered username if available
+    const savedUsername = localStorage.getItem('remembered_username');
+    if (savedUsername) {
+      setUsername(savedUsername);
+      setRememberMe(true);
     }
   }, [router]);
 
@@ -40,7 +50,12 @@ export default function LoginPage() {
       );
 
       if (res.success && res.data) {
-        setAuthToken(res.data.token);
+        setAuthToken(res.data.token, rememberMe);
+        if (rememberMe) {
+          localStorage.setItem('remembered_username', username);
+        } else {
+          localStorage.removeItem('remembered_username');
+        }
         router.push('/dashboard');
       } else {
         setError(res.error || 'Invalid credentials');
@@ -97,14 +112,25 @@ export default function LoginPage() {
             <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">
               Password
             </label>
-            <input
-              type="password"
-              className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2.5 text-white placeholder-zinc-500 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-colors"
+            <PasswordInput
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
             />
+          </div>
+
+          <div className="flex items-center justify-between pt-1">
+            <label className="flex items-center gap-2.5 cursor-pointer select-none text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                disabled={loading}
+                className="h-4 w-4 rounded border-zinc-700 bg-zinc-800 text-red-600 focus:ring-red-600 focus:ring-offset-zinc-900 transition-colors cursor-pointer accent-red-600"
+              />
+              <span>Remember me</span>
+            </label>
           </div>
 
           <button
