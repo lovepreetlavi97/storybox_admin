@@ -115,132 +115,15 @@ export default function SettingsPage() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         
-        {/* Core settings */}
-        <div className="rounded-2xl bg-zinc-900 border border-zinc-800 p-6 space-y-5">
-          <h2 className="text-lg font-bold text-white mb-2 flex items-center gap-2 border-b border-zinc-800 pb-3">
-            <SettingsIcon className="h-5 w-5 text-rose-500" />
-            Core Configuration
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
-                Platform Name / Title
-              </label>
-              <input
-                type="text"
-                required
-                className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2.5 text-white focus:outline-none focus:border-rose-500 transition-colors text-sm"
-                value={appTitle}
-                onChange={(e) => setAppTitle(e.target.value)}
-                disabled={submitting}
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
-                Support / Contact Email
-              </label>
-              <input
-                type="email"
-                required
-                className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2.5 text-white focus:outline-none focus:border-rose-500 transition-colors text-sm"
-                value={contactEmail}
-                onChange={(e) => setContactEmail(e.target.value)}
-                disabled={submitting}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Social Links */}
-        <div className="rounded-2xl bg-zinc-900 border border-zinc-800 p-6 space-y-4">
-          <h2 className="text-lg font-bold text-white mb-2 border-b border-zinc-800 pb-3">
-            Social Media Coordinates
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div>
-              <label className="block text-xs font-semibold text-zinc-400 mb-1.5">
-                YouTube URL
-              </label>
-              <input
-                type="url"
-                placeholder="https://youtube.com/..."
-                className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2 text-white placeholder-zinc-650 focus:outline-none focus:border-rose-500 transition-colors text-sm font-mono"
-                value={youtube}
-                onChange={(e) => setYoutube(e.target.value)}
-                disabled={submitting}
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-zinc-400 mb-1.5">
-                Instagram URL
-              </label>
-              <input
-                type="url"
-                placeholder="https://instagram.com/..."
-                className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2 text-white placeholder-zinc-650 focus:outline-none focus:border-rose-500 transition-colors text-sm font-mono"
-                value={instagram}
-                onChange={(e) => setInstagram(e.target.value)}
-                disabled={submitting}
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-zinc-400 mb-1.5">
-                Facebook URL
-              </label>
-              <input
-                type="url"
-                placeholder="https://facebook.com/..."
-                className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2 text-white placeholder-zinc-650 focus:outline-none focus:border-rose-500 transition-colors text-sm font-mono"
-                value={facebook}
-                onChange={(e) => setFacebook(e.target.value)}
-                disabled={submitting}
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-zinc-400 mb-1.5">
-                Twitter / X URL
-              </label>
-              <input
-                type="url"
-                placeholder="https://x.com/..."
-                className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2 text-white placeholder-zinc-650 focus:outline-none focus:border-rose-500 transition-colors text-sm font-mono"
-                value={twitter}
-                onChange={(e) => setTwitter(e.target.value)}
-                disabled={submitting}
-              />
-            </div>
-
-            <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-zinc-400 mb-1.5">
-                LinkedIn URL
-              </label>
-              <input
-                type="url"
-                placeholder="https://linkedin.com/in/..."
-                className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2 text-white placeholder-zinc-650 focus:outline-none focus:border-rose-500 transition-colors text-sm font-mono"
-                value={linkedin}
-                onChange={(e) => setLinkedin(e.target.value)}
-                disabled={submitting}
-              />
-            </div>
-          </div>
-        </div>
-
         {/* Brand/Support Text */}
         <div className="rounded-2xl bg-zinc-900 border border-zinc-800 p-6 space-y-4">
           <h2 className="text-lg font-bold text-white mb-2 border-b border-zinc-800 pb-3">
-            Footer / Support Disclaimer Text
+            Footer Brand / Copyright Text
           </h2>
 
           <div>
             <textarea
-              placeholder="e.g. StoryHub is a localized high-performance audio streaming platform. All rights reserved."
+              placeholder="e.g. StoryHub. All rights reserved. Stories that stay."
               rows={4}
               className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white placeholder-zinc-550 focus:outline-none focus:border-rose-500 transition-colors text-sm resize-none"
               value={supportText}
