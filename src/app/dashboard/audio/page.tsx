@@ -3,10 +3,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Plus, Edit2, Trash2, Search, X, 
-  Upload, FileAudio, Check, AlertCircle, ChevronLeft, ChevronRight 
+  Upload, FileAudio, AlertCircle, ChevronLeft, ChevronRight 
 } from 'lucide-react';
-import { apiRequest, SERVER_BASE_URL } from '../../../utils/api';
-import { ApiResponse, IAudio, ICategory, PaginatedResponse, getMediaUrl } from '@/types';
+import { adminService } from '@/services';
+import { SERVER_BASE_URL } from '@/constants/config';
+import { IAudio, ICategory, getMediaUrl } from '@/types';
 
 export default function AudioPage() {
   const [audios, setAudios] = useState<IAudio[]>([]);
@@ -56,22 +57,20 @@ export default function AudioPage() {
     setLoading(true);
     try {
       // Fetch categories
-      const catRes = await apiRequest<ApiResponse<ICategory[]>>('/admin/categories');
+      const catRes = await adminService.getCategories();
       if (catRes.success && catRes.data) {
         setCategories(catRes.data);
       }
 
       // Fetch audios
-      const searchParam = searchTerm ? `&search=${encodeURIComponent(searchTerm)}` : '';
-      const audioRes = await apiRequest<PaginatedResponse<IAudio>>(
-        `/admin/audios?page=${currentPage}&limit=${limit}${searchParam}`
-      );
-
+      const audioRes = await adminService.getAudios();
       if (audioRes.success && audioRes.data) {
-        setAudios(audioRes.data);
-        if (audioRes.pagination) {
-          setTotalPages(audioRes.pagination.pages || 1);
+        let filtered = audioRes.data;
+        if (searchTerm) {
+          filtered = filtered.filter(a => a.title.toLowerCase().includes(searchTerm.toLowerCase()));
         }
+        setAudios(filtered);
+        setTotalPages(Math.max(1, Math.ceil(filtered.length / limit)));
       }
     } catch (err: any) {
       setError(err.message || 'Error loading dashboard data');
@@ -97,21 +96,13 @@ export default function AudioPage() {
     if (!file) return;
 
     setThumbnailFile(file);
-    // Instant local preview
     const localPreviewUrl = URL.createObjectURL(file);
     setThumbnailUrl(localPreviewUrl);
     setThumbnailLoading(true);
     setError('');
 
-    const formData = new FormData();
-    formData.append('image', file);
-
     try {
-      const res = await apiRequest<ApiResponse<{ url: string }>>('/admin/upload/image', {
-        method: 'POST',
-        body: formData,
-      });
-
+      const res = await adminService.uploadFile(file, 'image');
       if (res.success && res.data) {
         setThumbnailUrl(res.data.url);
       } else {
@@ -144,15 +135,8 @@ export default function AudioPage() {
       console.error('Failed to parse duration client-side:', err);
     }
 
-    const formData = new FormData();
-    formData.append('audio', file);
-
     try {
-      const res = await apiRequest<ApiResponse<{ url: string }>>('/admin/upload/audio', {
-        method: 'POST',
-        body: formData,
-      });
-
+      const res = await adminService.uploadFile(file, 'audio');
       if (res.success && res.data) {
         setAudioUrl(res.data.url);
       } else {
@@ -229,12 +213,9 @@ export default function AudioPage() {
     };
 
     try {
-      const method = editingId ? 'PUT' : 'POST';
-      const endpoint = editingId ? `/admin/audios/${editingId}` : '/admin/audios';
-      const res = await apiRequest<ApiResponse<IAudio>>(endpoint, {
-        method,
-        body: JSON.stringify(payload),
-      });
+      const res = editingId
+        ? await adminService.updateAudio(editingId, payload)
+        : await adminService.createAudio(payload);
 
       if (res.success) {
         fetchData();
@@ -253,9 +234,7 @@ export default function AudioPage() {
     if (!confirm('Are you sure you want to delete this audio? All local files will be removed.')) return;
     
     try {
-      const res = await apiRequest<ApiResponse<any>>(`/admin/audios/${id}`, {
-        method: 'DELETE'
-      });
+      const res = await adminService.deleteAudio(id);
       if (res.success) {
         setAudios(audios.filter(a => a._id !== id));
       } else {
@@ -299,7 +278,7 @@ export default function AudioPage() {
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
-            setCurrentPage(1); // reset to page 1 on search
+            setCurrentPage(1);
           }}
         />
       </div>

@@ -1,0 +1,21 @@
+import { SERVER_BASE_URL } from '@/constants/config';
+
+/**
+ * Dynamically resolves media URLs (thumbnails, audio tracks, banners).
+ * Handles absolute URLs (http, https, blob, data), relative server upload paths,
+ * and fallbacks.
+ */
+export function getMediaUrl(url?: string | null, defaultBaseUrl: string = SERVER_BASE_URL): string {
+  if (!url) return '';
+  if (
+    url.startsWith('http://') ||
+    url.startsWith('https://') ||
+    url.startsWith('blob:') ||
+    url.startsWith('data:')
+  ) {
+    return url;
+  }
+  const cleanBase = defaultBaseUrl.replace(/\/api\/?$/, '').replace(/\/$/, '');
+  const cleanUrl = url.startsWith('/') ? url : `/${url}`;
+  return `${cleanBase}${cleanUrl}`;
+}

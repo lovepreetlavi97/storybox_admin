@@ -12,8 +12,9 @@ import {
   Calendar,
   Volume2
 } from 'lucide-react';
-import { apiRequest, SERVER_BASE_URL } from '../../utils/api';
-import { ApiResponse, IAudio, getMediaUrl } from '@/types';
+import { adminService } from '@/services';
+import { SERVER_BASE_URL } from '@/constants/config';
+import { IAudio, getMediaUrl } from '@/types';
 
 interface DashboardStats {
   totalAudios: number;
@@ -30,7 +31,7 @@ export default function DashboardOverview() {
   useEffect(() => {
     async function fetchStats() {
       try {
-        const res = await apiRequest<ApiResponse<DashboardStats>>('/admin/dashboard');
+        const res = await adminService.getDashboardStats();
         if (res.success && res.data) {
           setStats(res.data);
         } else {

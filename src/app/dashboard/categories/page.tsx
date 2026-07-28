@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, FolderKanban, X } from 'lucide-react';
-import { apiRequest } from '../../../utils/api';
-import { ApiResponse, ICategory } from '@/types';
+import { adminService } from '@/services';
+import { ICategory } from '@/types';
 
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -24,7 +24,7 @@ export default function CategoriesPage() {
 
   async function fetchCategories() {
     try {
-      const res = await apiRequest<ApiResponse<ICategory[]>>('/admin/categories');
+      const res = await adminService.getCategories();
       if (res.success && res.data) {
         setCategories(res.data);
       } else {
@@ -84,12 +84,9 @@ export default function CategoriesPage() {
     setError('');
 
     try {
-      const method = editingId ? 'PUT' : 'POST';
-      const endpoint = editingId ? `/admin/categories/${editingId}` : '/admin/categories';
-      const res = await apiRequest<ApiResponse<ICategory>>(endpoint, {
-        method,
-        body: JSON.stringify({ name, slug, description }),
-      });
+      const res = editingId
+        ? await adminService.updateCategory(editingId, { name, description })
+        : await adminService.createCategory({ name, description });
 
       if (res.success) {
         fetchCategories();
@@ -108,9 +105,7 @@ export default function CategoriesPage() {
     if (!confirm('Are you sure you want to delete this category?')) return;
     
     try {
-      const res = await apiRequest<ApiResponse<any>>(`/admin/categories/${id}`, {
-        method: 'DELETE'
-      });
+      const res = await adminService.deleteCategory(id);
       if (res.success) {
         setCategories(categories.filter(c => c._id !== id));
       } else {

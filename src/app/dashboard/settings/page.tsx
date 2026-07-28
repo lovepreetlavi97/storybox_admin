@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Settings as SettingsIcon, Save, CheckCircle, AlertCircle } from 'lucide-react';
-import { apiRequest } from '../../../utils/api';
-import { ApiResponse, ISettings } from '@/types';
+import { adminService } from '@/services';
+import { ISettings } from '@/types';
 
 export default function SettingsPage() {
   const [loading, setLoading] = useState(true);
@@ -24,11 +24,11 @@ export default function SettingsPage() {
   useEffect(() => {
     async function fetchSettings() {
       try {
-        const res = await apiRequest<ApiResponse<ISettings>>('/admin/settings');
+        const res = await adminService.getSettings();
         if (res.success && res.data) {
           const s = res.data;
-          setAppTitle(s.appTitle || 'Kuku FM Clone');
-          setContactEmail(s.contactEmail || 'support@kukufmclone.com');
+          setAppTitle(s.appTitle || 'StoryHub');
+          setContactEmail(s.contactEmail || 'support@storyhub.com');
           setFacebook(s.socialLinks?.facebook || '');
           setYoutube(s.socialLinks?.youtube || '');
           setInstagram(s.socialLinks?.instagram || '');
@@ -68,10 +68,7 @@ export default function SettingsPage() {
     };
 
     try {
-      const res = await apiRequest<ApiResponse<ISettings>>('/admin/settings', {
-        method: 'PUT',
-        body: JSON.stringify(payload)
-      });
+      const res = await adminService.updateSettings(payload);
 
       if (res.success) {
         setSuccess(true);
@@ -243,7 +240,7 @@ export default function SettingsPage() {
 
           <div>
             <textarea
-              placeholder="e.g. Kuku FM Clone is a localized high-performance audio streaming platform. All rights reserved."
+              placeholder="e.g. StoryHub is a localized high-performance audio streaming platform. All rights reserved."
               rows={4}
               className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-3 text-white placeholder-zinc-550 focus:outline-none focus:border-rose-500 transition-colors text-sm resize-none"
               value={supportText}

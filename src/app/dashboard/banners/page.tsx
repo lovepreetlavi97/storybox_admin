@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Plus, Edit2, Trash2, X, Upload, Link2, Eye, Image as ImageIcon } from 'lucide-react';
-import { apiRequest, SERVER_BASE_URL } from '../../../utils/api';
-import { ApiResponse, IBanner, getMediaUrl } from '@/types';
+import { Plus, Edit2, Trash2, X, Upload, Link2, Image as ImageIcon } from 'lucide-react';
+import { adminService } from '@/services';
+import { SERVER_BASE_URL } from '@/constants/config';
+import { IBanner, getMediaUrl } from '@/types';
 
 export default function BannersPage() {
   const [banners, setBanners] = useState<IBanner[]>([]);
@@ -35,7 +36,7 @@ export default function BannersPage() {
 
   async function fetchBanners() {
     try {
-      const res = await apiRequest<ApiResponse<IBanner[]>>('/admin/banners');
+      const res = await adminService.getBanners();
       if (res.success && res.data) {
         setBanners(res.data);
       } else {
@@ -53,20 +54,12 @@ export default function BannersPage() {
     if (!file) return;
 
     setImageFile(file);
-    // Instant local preview
     setImageUrl(URL.createObjectURL(file));
     setImageLoading(true);
     setError('');
 
-    const formData = new FormData();
-    formData.append('image', file);
-
     try {
-      const res = await apiRequest<ApiResponse<{ url: string }>>('/admin/upload/image', {
-        method: 'POST',
-        body: formData,
-      });
-
+      const res = await adminService.uploadFile(file, 'image');
       if (res.success && res.data) {
         setImageUrl(res.data.url);
       } else {
@@ -128,12 +121,9 @@ export default function BannersPage() {
     };
 
     try {
-      const method = editingId ? 'PUT' : 'POST';
-      const endpoint = editingId ? `/admin/banners/${editingId}` : '/admin/banners';
-      const res = await apiRequest<ApiResponse<IBanner>>(endpoint, {
-        method,
-        body: JSON.stringify(payload),
-      });
+      const res = editingId
+        ? await adminService.updateBanner(editingId, payload)
+        : await adminService.createBanner(payload);
 
       if (res.success) {
         fetchBanners();
@@ -152,9 +142,7 @@ export default function BannersPage() {
     if (!confirm('Are you sure you want to delete this banner? The image file will be cleaned up.')) return;
 
     try {
-      const res = await apiRequest<ApiResponse<any>>(`/admin/banners/${id}`, {
-        method: 'DELETE'
-      });
+      const res = await adminService.deleteBanner(id);
       if (res.success) {
         setBanners(banners.filter(b => b._id !== id));
       } else {

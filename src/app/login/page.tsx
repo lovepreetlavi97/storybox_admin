@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { apiRequest, setAuthToken, getAuthToken } from '../../utils/api';
+import { apiRequest } from '@/services/api';
+import { setAuthToken, getAuthToken } from '@/utils/auth';
 import { ApiResponse } from '@/types';
 
 export default function LoginPage() {
@@ -56,6 +57,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md rounded-2xl bg-zinc-900 p-8 border border-zinc-800 shadow-2xl">
         <div className="mb-8 text-center">
           <div className="flex flex-col items-center justify-center gap-3 mb-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src="/storyhublogo.png" 
               alt="StoryHub Logo" 
