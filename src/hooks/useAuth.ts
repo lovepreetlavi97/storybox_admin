@@ -12,11 +12,14 @@ export function useAuth() {
     if (!token) {
       setAuthorized(false);
       setLoading(false);
+      if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
+        router.push('/login');
+      }
     } else {
       setAuthorized(true);
       setLoading(false);
     }
-  }, []);
+  }, [router]);
 
   const login = (token: string) => {
     setAuthToken(token);

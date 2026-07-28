@@ -1,5 +1,5 @@
 import { API_BASE_URL } from '@/constants/config';
-import { getAuthToken } from '@/utils/auth';
+import { getAuthToken, removeAuthToken } from '@/utils/auth';
 
 export async function apiRequest<T>(
   endpoint: string,
@@ -23,6 +23,13 @@ export async function apiRequest<T>(
   });
 
   const data = await response.json();
+
+  if (response.status === 401) {
+    removeAuthToken();
+    if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
+      window.location.href = '/login';
+    }
+  }
 
   if (!response.ok) {
     throw new Error(data.error || 'Something went wrong');
