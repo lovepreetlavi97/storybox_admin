@@ -158,7 +158,6 @@ export default function DashboardOverview() {
                 <tr className="border-b border-zinc-800 text-xs font-semibold text-zinc-400 uppercase tracking-wider bg-zinc-950/50">
                   <th className="px-6 py-4">Title</th>
                   <th className="px-6 py-4">Category</th>
-                  <th className="px-6 py-4">Language</th>
                   <th className="px-6 py-4">Status</th>
                   <th className="px-6 py-4">Uploaded</th>
                 </tr>
@@ -182,7 +181,6 @@ export default function DashboardOverview() {
                       <span className="truncate max-w-[200px]">{audio.title}</span>
                     </td>
                     <td className="px-6 py-4">{audio.category?.name || 'N/A'}</td>
-                    <td className="px-6 py-4 font-medium text-xs bg-zinc-800/30 w-fit rounded px-2.5 py-0.5 border border-zinc-800">{audio.language}</td>
                     <td className="px-6 py-4">
                       {audio.published ? (
                         <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">

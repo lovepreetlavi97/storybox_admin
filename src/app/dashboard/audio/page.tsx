@@ -31,7 +31,6 @@ export default function AudioPage() {
   const [slug, setSlug] = useState('');
   const [description, setDescription] = useState('');
   const [categoryId, setCategoryId] = useState('');
-  const [language, setLanguage] = useState('Hindi');
   const [featured, setFeatured] = useState(false);
   const [trending, setTrending] = useState(false);
   const [published, setPublished] = useState(true);
@@ -157,7 +156,6 @@ export default function AudioPage() {
       setSlug(audio.slug);
       setDescription(audio.description);
       setCategoryId(typeof audio.category === 'object' ? (audio.category as any)._id : audio.category);
-      setLanguage(audio.language);
       setFeatured(audio.featured);
       setTrending(audio.trending);
       setPublished(audio.published);
@@ -170,7 +168,6 @@ export default function AudioPage() {
       setSlug('');
       setDescription('');
       setCategoryId(categories[0]?._id || '');
-      setLanguage('Hindi');
       setFeatured(false);
       setTrending(false);
       setPublished(true);
@@ -206,7 +203,7 @@ export default function AudioPage() {
       audioUrl,
       duration,
       category: categoryId,
-      language,
+      language: 'English',
       featured,
       trending,
       published
@@ -297,7 +294,6 @@ export default function AudioPage() {
                     <tr className="border-b border-zinc-800 text-xs font-semibold text-zinc-400 uppercase tracking-wider bg-zinc-950/50">
                       <th className="px-6 py-4">Title</th>
                       <th className="px-6 py-4">Category</th>
-                      <th className="px-6 py-4">Language</th>
                       <th className="px-6 py-4">Duration</th>
                       <th className="px-6 py-4">Attributes</th>
                       <th className="px-6 py-4 text-right">Actions</th>
@@ -319,9 +315,6 @@ export default function AudioPage() {
                           </div>
                         </td>
                         <td className="px-6 py-4">{(audio.category as any)?.name || 'N/A'}</td>
-                        <td className="px-6 py-4 font-medium text-xs">
-                          <span className="bg-zinc-850 px-2.5 py-0.5 rounded border border-zinc-800">{audio.language}</span>
-                        </td>
                         <td className="px-6 py-4 font-mono text-zinc-400">{formatDuration(audio.duration)}</td>
                         <td className="px-6 py-4 space-y-1">
                           <div className="flex flex-wrap gap-1.5">
@@ -548,7 +541,7 @@ export default function AudioPage() {
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Rich Dad Poor Dad (Hindi)"
+                      placeholder="e.g. Rich Dad Poor Dad"
                       className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2 text-white placeholder-zinc-500 focus:outline-none focus:border-rose-500 transition-colors text-sm"
                       value={title}
                       onChange={(e) => handleTitleChange(e.target.value)}
@@ -563,7 +556,7 @@ export default function AudioPage() {
                     <input
                       type="text"
                       required
-                      placeholder="rich-dad-poor-dad-hindi"
+                      placeholder="rich-dad-poor-dad"
                       className="w-full rounded-lg bg-zinc-850 border border-zinc-700 px-4 py-2 text-zinc-300 font-mono focus:outline-none focus:border-rose-500 text-sm"
                       value={slug}
                       onChange={(e) => setSlug(e.target.value)}
@@ -571,40 +564,23 @@ export default function AudioPage() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
-                        Category <span className="text-rose-500">*</span>
-                      </label>
-                      <select
-                        required
-                        className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-3 py-2 text-white focus:outline-none focus:border-rose-500 transition-colors text-sm"
-                        value={categoryId}
-                        onChange={(e) => setCategoryId(e.target.value)}
-                        disabled={submitting}
-                      >
-                        {categories.map((cat) => (
-                          <option key={cat._id} value={cat._id}>
-                            {cat.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
-                        Language <span className="text-rose-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="Hindi, English, etc."
-                        className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2 text-white placeholder-zinc-500 focus:outline-none focus:border-rose-500 transition-colors text-sm"
-                        value={language}
-                        onChange={(e) => setLanguage(e.target.value)}
-                        disabled={submitting}
-                      />
-                    </div>
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1.5">
+                      Category <span className="text-rose-500">*</span>
+                    </label>
+                    <select
+                      required
+                      className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-3 py-2 text-white focus:outline-none focus:border-rose-500 transition-colors text-sm"
+                      value={categoryId}
+                      onChange={(e) => setCategoryId(e.target.value)}
+                      disabled={submitting}
+                    >
+                      {categories.map((cat) => (
+                        <option key={cat._id} value={cat._id}>
+                          {cat.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   <div>
