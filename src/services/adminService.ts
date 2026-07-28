@@ -12,14 +12,14 @@ export const adminService = {
     return apiRequest('/admin/categories');
   },
 
-  async createCategory(payload: { name: string; description?: string }): Promise<ApiResponse<ICategory>> {
+  async createCategory(payload: { name: string; slug: string; description?: string }): Promise<ApiResponse<ICategory>> {
     return apiRequest('/admin/categories', {
       method: 'POST',
       body: JSON.stringify(payload),
     });
   },
 
-  async updateCategory(id: string, payload: { name: string; description?: string }): Promise<ApiResponse<ICategory>> {
+  async updateCategory(id: string, payload: { name: string; slug: string; description?: string }): Promise<ApiResponse<ICategory>> {
     return apiRequest(`/admin/categories/${id}`, {
       method: 'PUT',
       body: JSON.stringify(payload),

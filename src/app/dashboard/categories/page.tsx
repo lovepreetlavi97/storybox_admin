@@ -85,8 +85,8 @@ export default function CategoriesPage() {
 
     try {
       const res = editingId
-        ? await adminService.updateCategory(editingId, { name, description })
-        : await adminService.createCategory({ name, description });
+        ? await adminService.updateCategory(editingId, { name, slug, description })
+        : await adminService.createCategory({ name, slug, description });
 
       if (res.success) {
         fetchCategories();
