@@ -39,10 +39,12 @@ export default function AudioPage() {
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [thumbnailUrl, setThumbnailUrl] = useState('');
   const [thumbnailLoading, setThumbnailLoading] = useState(false);
+  const [thumbnailProgress, setThumbnailProgress] = useState(0);
 
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [audioUrl, setAudioUrl] = useState('');
   const [audioLoading, setAudioLoading] = useState(false);
+  const [audioProgress, setAudioProgress] = useState(0);
   const [duration, setDuration] = useState(0);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -98,10 +100,13 @@ export default function AudioPage() {
     const localPreviewUrl = URL.createObjectURL(file);
     setThumbnailUrl(localPreviewUrl);
     setThumbnailLoading(true);
+    setThumbnailProgress(0);
     setError('');
 
     try {
-      const res = await adminService.uploadFile(file, 'image');
+      const res = await adminService.uploadFile(file, 'image', (percent) => {
+        setThumbnailProgress(percent);
+      });
       if (res.success && res.data) {
         setThumbnailUrl(res.data.url);
       } else {
@@ -121,6 +126,7 @@ export default function AudioPage() {
 
     setAudioFile(file);
     setAudioLoading(true);
+    setAudioProgress(0);
     setError('');
 
     // Capture duration using web Audio API locally
@@ -135,7 +141,9 @@ export default function AudioPage() {
     }
 
     try {
-      const res = await adminService.uploadFile(file, 'audio');
+      const res = await adminService.uploadFile(file, 'audio', (percent) => {
+        setAudioProgress(percent);
+      });
       if (res.success && res.data) {
         setAudioUrl(res.data.url);
       } else {
@@ -150,6 +158,8 @@ export default function AudioPage() {
 
   const handleOpenModal = (audio?: IAudio) => {
     setError('');
+    setThumbnailProgress(0);
+    setAudioProgress(0);
     if (audio) {
       setEditingId(audio._id);
       setTitle(audio.title);
@@ -446,14 +456,21 @@ export default function AudioPage() {
                           alt="Cover Thumbnail" 
                           className="h-full w-full object-cover"
                         />
-                        <button
-                          type="button"
-                          onClick={() => thumbnailInputRef.current?.click()}
-                          className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 text-white font-semibold transition-opacity text-sm cursor-pointer"
-                        >
-                          <Upload className="h-5 w-5" />
-                          Change Cover
-                        </button>
+                        {thumbnailLoading ? (
+                          <div className="absolute inset-0 bg-black/75 flex flex-col items-center justify-center gap-2">
+                            <div className="h-8 w-8 animate-spin rounded-full border-4 border-rose-500 border-t-transparent"></div>
+                            <span className="text-xs font-semibold text-rose-500">{thumbnailProgress}% uploaded</span>
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => thumbnailInputRef.current?.click()}
+                            className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 text-white font-semibold transition-opacity text-sm cursor-pointer"
+                          >
+                            <Upload className="h-5 w-5" />
+                            Change Cover
+                          </button>
+                        )}
                       </div>
                     ) : (
                       <button
@@ -463,7 +480,10 @@ export default function AudioPage() {
                         className="w-full border-2 border-dashed border-zinc-800 rounded-xl h-44 bg-zinc-950 hover:border-zinc-700 transition-colors flex flex-col items-center justify-center gap-2 cursor-pointer text-zinc-500 hover:text-zinc-400"
                       >
                         {thumbnailLoading ? (
-                          <div className="h-8 w-8 animate-spin rounded-full border-4 border-rose-500 border-t-transparent"></div>
+                          <div className="flex flex-col items-center gap-2">
+                            <div className="h-8 w-8 animate-spin rounded-full border-4 border-rose-500 border-t-transparent"></div>
+                            <span className="text-xs font-semibold text-rose-500">{thumbnailProgress}% uploaded</span>
+                          </div>
                         ) : (
                           <>
                             <Upload className="h-8 w-8" />
@@ -488,7 +508,14 @@ export default function AudioPage() {
                       onChange={handleAudioSelect}
                     />
 
-                    {audioUrl ? (
+                    {audioLoading ? (
+                      <div className="w-full border-2 border-dashed border-zinc-800 rounded-xl py-8 bg-zinc-950 flex flex-col items-center justify-center gap-2 text-zinc-500">
+                        <div className="flex flex-col items-center gap-2">
+                          <div className="h-8 w-8 animate-spin rounded-full border-4 border-rose-500 border-t-transparent"></div>
+                          <span className="text-xs font-semibold text-rose-500">{audioProgress}% uploaded</span>
+                        </div>
+                      </div>
+                    ) : audioUrl ? (
                       <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <div className="p-2.5 rounded-lg bg-rose-500/10 text-rose-400">
@@ -515,18 +542,13 @@ export default function AudioPage() {
                       <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        disabled={audioLoading}
                         className="w-full border-2 border-dashed border-zinc-800 rounded-xl py-8 bg-zinc-950 hover:border-zinc-700 transition-colors flex flex-col items-center justify-center gap-2 cursor-pointer text-zinc-500 hover:text-zinc-400"
                       >
-                        {audioLoading ? (
-                          <div className="h-8 w-8 animate-spin rounded-full border-4 border-rose-500 border-t-transparent"></div>
-                        ) : (
-                          <>
-                            <FileAudio className="h-8 w-8" />
-                            <span className="text-sm font-medium">Select MP3 Audio File</span>
-                            <span className="text-xs text-zinc-600">MP3, M4A or WAV format</span>
-                          </>
-                        )}
+                        <>
+                          <FileAudio className="h-8 w-8" />
+                          <span className="text-sm font-medium">Select MP3 Audio File</span>
+                          <span className="text-xs text-zinc-600">MP3, M4A or WAV format</span>
+                        </>
                       </button>
                     )}
                   </div>

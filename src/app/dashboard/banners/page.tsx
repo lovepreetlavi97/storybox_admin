@@ -27,6 +27,7 @@ export default function BannersPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState('');
   const [imageLoading, setImageLoading] = useState(false);
+  const [imageProgress, setImageProgress] = useState(0);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -56,10 +57,13 @@ export default function BannersPage() {
     setImageFile(file);
     setImageUrl(URL.createObjectURL(file));
     setImageLoading(true);
+    setImageProgress(0);
     setError('');
 
     try {
-      const res = await adminService.uploadFile(file, 'image');
+      const res = await adminService.uploadFile(file, 'image', (percent) => {
+        setImageProgress(percent);
+      });
       if (res.success && res.data) {
         setImageUrl(res.data.url);
       } else {
@@ -74,6 +78,7 @@ export default function BannersPage() {
 
   const handleOpenModal = (banner?: IBanner) => {
     setError('');
+    setImageProgress(0);
     if (banner) {
       setEditingId(banner._id);
       setTitle(banner.title);
@@ -289,14 +294,21 @@ export default function BannersPage() {
                       alt="Banner Preview" 
                       className="h-full w-full object-cover"
                     />
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 text-white font-semibold transition-opacity text-sm cursor-pointer"
-                    >
-                      <Upload className="h-5 w-5" />
-                      Replace Banner Image
-                    </button>
+                    {imageLoading ? (
+                      <div className="absolute inset-0 bg-black/75 flex flex-col items-center justify-center gap-2">
+                        <div className="h-8 w-8 animate-spin rounded-full border-4 border-rose-500 border-t-transparent"></div>
+                        <span className="text-xs font-semibold text-rose-500">{imageProgress}% uploaded</span>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 text-white font-semibold transition-opacity text-sm cursor-pointer"
+                      >
+                        <Upload className="h-5 w-5" />
+                        Replace Banner Image
+                      </button>
+                    )}
                   </div>
                 ) : (
                   <button
@@ -306,7 +318,10 @@ export default function BannersPage() {
                     className="w-full border-2 border-dashed border-zinc-800 rounded-xl aspect-[21/9] bg-zinc-950 hover:border-zinc-700 transition-colors flex flex-col items-center justify-center gap-2 cursor-pointer text-zinc-500 hover:text-zinc-400"
                   >
                     {imageLoading ? (
-                      <div className="h-8 w-8 animate-spin rounded-full border-4 border-rose-500 border-t-transparent"></div>
+                      <div className="flex flex-col items-center gap-2">
+                        <div className="h-8 w-8 animate-spin rounded-full border-4 border-rose-500 border-t-transparent"></div>
+                        <span className="text-xs font-semibold text-rose-500">{imageProgress}% uploaded</span>
+                      </div>
                     ) : (
                       <>
                         <Upload className="h-8 w-8" />

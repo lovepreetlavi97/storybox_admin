@@ -1,5 +1,7 @@
 import { apiRequest } from './api';
 import { ApiResponse, IAudio, IBanner, ICategory, ISettings } from '@/types';
+import { API_BASE_URL } from '@/constants/config';
+import { getAuthToken } from '@/utils/auth';
 
 export const adminService = {
   async getDashboardStats(): Promise<ApiResponse<any>> {
@@ -89,12 +91,50 @@ export const adminService = {
     });
   },
 
-  async uploadFile(file: File, type: 'image' | 'audio'): Promise<ApiResponse<{ url: string }>> {
-    const formData = new FormData();
-    formData.append('file', file);
-    return apiRequest(`/admin/upload/${type}`, {
-      method: 'POST',
-      body: formData,
+  uploadFile(
+    file: File,
+    type: 'image' | 'audio',
+    onProgress?: (percent: number) => void
+  ): Promise<ApiResponse<{ url: string }>> {
+    return new Promise((resolve) => {
+      const xhr = new XMLHttpRequest();
+      const token = getAuthToken();
+
+      xhr.open('POST', `${API_BASE_URL}/admin/upload/${type}`);
+
+      if (token) {
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+      }
+
+      if (xhr.upload && onProgress) {
+        xhr.upload.addEventListener('progress', (event) => {
+          if (event.lengthComputable) {
+            const percent = Math.round((event.loaded / event.total) * 100);
+            onProgress(percent);
+          }
+        });
+      }
+
+      xhr.onload = () => {
+        try {
+          const response = JSON.parse(xhr.responseText);
+          if (xhr.status >= 200 && xhr.status < 300) {
+            resolve(response);
+          } else {
+            resolve({ success: false, error: response.error || 'Upload failed' } as any);
+          }
+        } catch (err) {
+          resolve({ success: false, error: 'Failed to parse server response' } as any);
+        }
+      };
+
+      xhr.onerror = () => {
+        resolve({ success: false, error: 'Network error during upload' } as any);
+      };
+
+      const formData = new FormData();
+      formData.append('file', file);
+      xhr.send(formData);
     });
   }
 };
