@@ -56,17 +56,14 @@ export default function LoginPage() {
       <div className="w-full max-w-md rounded-2xl bg-zinc-900 p-8 border border-zinc-800 shadow-2xl">
         <div className="mb-8 text-center">
           <div className="flex flex-col items-center justify-center gap-3 mb-4">
-            <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-950 border border-zinc-800 shadow-lg shadow-cyan-500/10 overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-fuchsia-500 to-rose-500 opacity-25"></div>
-              <svg className="h-7 w-7 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                <line x1="12" y1="22.08" x2="12" y2="12" />
-              </svg>
-            </div>
+            <img 
+              src="/storyhublogo.png" 
+              alt="StoryHub Logo" 
+              className="h-14 w-auto object-contain rounded-xl shadow-lg shadow-cyan-500/10 mb-1" 
+            />
             <div>
               <h1 className="text-2xl font-black tracking-tight text-white">
-                Story<span className="text-cyan-400">Box</span> Console
+                Story<span className="text-cyan-400">Hub</span> Console
               </h1>
               <p className="mt-1 text-xs text-zinc-400 uppercase tracking-wider font-semibold">Futuristic Stream Launch Dashboard</p>
             </div>

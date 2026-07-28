@@ -59,16 +59,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* SIDEBAR FOR DESKTOP */}
       <aside className="hidden md:flex flex-col w-64 bg-zinc-900 border-r border-zinc-800">
         <div className="flex items-center gap-3 px-6 h-16 border-b border-zinc-800">
-          <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-950 border border-zinc-800 shadow-md shadow-cyan-500/10 overflow-hidden shrink-0">
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-fuchsia-500 to-rose-500 opacity-25"></div>
-            <svg className="h-5 w-5 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-              <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-              <line x1="12" y1="22.08" x2="12" y2="12" />
-            </svg>
-          </div>
+          <img 
+            src="/storyhublogo.png" 
+            alt="StoryHub Logo" 
+            className="h-8 w-auto object-contain rounded shrink-0" 
+          />
           <span className="font-black text-base tracking-tight text-white">
-            Story<span className="text-cyan-400">Box</span>
+            Story<span className="text-cyan-400">Hub</span>
           </span>
         </div>
 
@@ -108,16 +105,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <div className="flex flex-col flex-1 overflow-hidden">
         <header className="flex md:hidden items-center justify-between px-6 h-16 bg-zinc-900 border-b border-zinc-800 z-20">
           <div className="flex items-center gap-2.5">
-            <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-950 border border-zinc-800 shadow-md overflow-hidden shrink-0">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-fuchsia-500 to-rose-500 opacity-25"></div>
-              <svg className="h-5 w-5 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                <line x1="12" y1="22.08" x2="12" y2="12" />
-              </svg>
-            </div>
+            <img 
+              src="/storyhublogo.png" 
+              alt="StoryHub Logo" 
+              className="h-8 w-auto object-contain rounded shrink-0" 
+            />
             <span className="font-black text-base tracking-tight">
-              Story<span className="text-cyan-400">Box</span>
+              Story<span className="text-cyan-400">Hub</span>
             </span>
           </div>
 
