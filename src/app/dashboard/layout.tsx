@@ -39,7 +39,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     return (
       <div className="flex h-screen items-center justify-center bg-zinc-950 text-zinc-100">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-cyan-500 border-t-transparent"></div>
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-red-600 border-t-transparent"></div>
           <p className="text-zinc-400">Verifying session...</p>
         </div>
       </div>
@@ -65,7 +65,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             className="h-8 w-auto object-contain rounded shrink-0" 
           />
           <span className="font-black text-base tracking-tight text-white">
-            Story<span className="text-cyan-400">Hub</span>
+            Story<span className="text-red-500">Hub</span>
           </span>
         </div>
 
@@ -79,7 +79,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 href={link.href}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
                   isActive 
-                    ? 'bg-cyan-600 text-white font-semibold shadow-md shadow-cyan-500/10' 
+                    ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white font-semibold shadow-md shadow-red-600/20' 
                     : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
                 }`}
               >
@@ -93,7 +93,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <div className="p-4 border-t border-zinc-800">
           <button
             onClick={handleLogout}
-            className="flex w-full items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-zinc-400 hover:bg-cyan-500/10 hover:text-cyan-400 transition-all cursor-pointer"
+            className="flex w-full items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-zinc-400 hover:bg-red-500/10 hover:text-red-500 transition-all cursor-pointer"
           >
             <LogOut className="h-5 w-5" />
             Logout
@@ -111,7 +111,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               className="h-8 w-auto object-contain rounded shrink-0" 
             />
             <span className="font-black text-base tracking-tight">
-              Story<span className="text-cyan-400">Hub</span>
+              Story<span className="text-red-500">Hub</span>
             </span>
           </div>
 
@@ -137,7 +137,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     onClick={() => setMobileMenuOpen(false)}
                     className={`flex items-center gap-4 px-5 py-3.5 rounded-xl text-base font-semibold transition-all ${
                       isActive 
-                        ? 'bg-cyan-600 text-white' 
+                        ? 'bg-red-600 text-white' 
                         : 'text-zinc-300 hover:bg-zinc-900'
                     }`}
                   >
@@ -149,7 +149,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </nav>
             <button
               onClick={handleLogout}
-              className="flex w-full items-center gap-4 px-5 py-3.5 rounded-xl text-base font-semibold text-cyan-400 hover:bg-cyan-500/10 transition-all border border-cyan-500/20"
+              className="flex w-full items-center gap-4 px-5 py-3.5 rounded-xl text-base font-semibold text-red-500 hover:bg-red-500/10 transition-all border border-red-500/20"
             >
               <LogOut className="h-6 w-6" />
               Logout

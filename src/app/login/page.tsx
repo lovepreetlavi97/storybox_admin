@@ -59,19 +59,19 @@ export default function LoginPage() {
             <img 
               src="/storyhublogo.png" 
               alt="StoryHub Logo" 
-              className="h-14 w-auto object-contain rounded-xl shadow-lg shadow-cyan-500/10 mb-1" 
+              className="h-14 w-auto object-contain rounded-xl shadow-lg shadow-red-600/20 mb-1" 
             />
             <div>
               <h1 className="text-2xl font-black tracking-tight text-white">
-                Story<span className="text-cyan-400">Hub</span> Console
+                Story<span className="text-red-500">Hub</span> Console
               </h1>
-              <p className="mt-1 text-xs text-zinc-400 uppercase tracking-wider font-semibold">Futuristic Stream Launch Dashboard</p>
+              <p className="mt-1 text-xs text-zinc-400 uppercase tracking-wider font-semibold">Luxury Audio Streaming Dashboard</p>
             </div>
           </div>
         </div>
 
         {error && (
-          <div className="mb-4 rounded-lg bg-rose-500/10 border border-rose-500/30 p-3.5 text-sm text-rose-400">
+          <div className="mb-4 rounded-lg bg-red-500/10 border border-red-500/30 p-3.5 text-sm text-red-400">
             {error}
           </div>
         )}
@@ -83,7 +83,7 @@ export default function LoginPage() {
             </label>
             <input
               type="text"
-              className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2.5 text-white placeholder-zinc-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors"
+              className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2.5 text-white placeholder-zinc-500 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-colors"
               placeholder="Enter your username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -97,7 +97,7 @@ export default function LoginPage() {
             </label>
             <input
               type="password"
-              className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2.5 text-white placeholder-zinc-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors"
+              className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-4 py-2.5 text-white placeholder-zinc-500 focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 transition-colors"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -108,7 +108,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center rounded-lg bg-gradient-to-r from-cyan-500 to-fuchsia-600 hover:from-cyan-400 hover:to-fuchsia-500 px-4 py-3 font-semibold text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-zinc-900 disabled:opacity-50 transition-all cursor-pointer mt-6 shadow-lg shadow-cyan-500/10"
+            className="w-full flex items-center justify-center rounded-lg bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 px-4 py-3 font-semibold text-white focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-zinc-900 disabled:opacity-50 transition-all cursor-pointer mt-6 shadow-lg shadow-red-600/25"
           >
             {loading ? (
               <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />

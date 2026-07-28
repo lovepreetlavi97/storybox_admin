@@ -74,21 +74,21 @@ export default function DashboardOverview() {
       name: 'Total Audiobooks',
       value: stats?.totalAudios || 0,
       icon: Music,
-      color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+      color: 'bg-red-500/10 text-red-400 border-red-500/20',
       href: '/dashboard/audio'
     },
     {
       name: 'Categories',
       value: stats?.totalCategories || 0,
       icon: FolderKanban,
-      color: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+      color: 'bg-rose-500/10 text-rose-400 border-rose-500/20',
       href: '/dashboard/categories'
     },
     {
       name: 'Hero Banners',
       value: stats?.totalBanners || 0,
       icon: ImageIcon,
-      color: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+      color: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
       href: '/dashboard/banners'
     }
   ];
