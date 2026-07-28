@@ -13,7 +13,7 @@ export async function apiRequest<T>(
   }
 
   // Determine if we're sending JSON or FormData (for file uploads)
-  if (!(options.body instanceof FormData) && !headers.has('Content-Type')) {
+  if (options.body && !(options.body instanceof FormData) && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');
   }
 
